@@ -1,0 +1,173 @@
+swagger: "2.0"
+info:
+  title: Banking Backend API
+  description: A pseudo banking Backend API.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: Abhishek Dev
+    url: https://github.com/RuthraVed
+    email: abhishek44dev@gmail.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 0.0.1
+
+host: 192.168.1.36:5000
+basePath: /api
+schemes:
+  - https
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+  
+
+definitions:
+  Transaction:
+    properties:
+      'Id':
+        type: integer
+        example: 1
+      'Account No':
+        type: integer
+        example: 409000611074
+      'Date':
+        type: string
+        example: "29 Jun 17"
+      'Transaction Details':
+        type: string
+        example: "TRF FROM  Indiaforensic SERVICES"
+      'Value Date':
+        type: string
+        example: "29 Jun 17"
+      'Withdrawal AMT':
+        type: string
+        example: ""
+      'Deposit AMT':
+        type: string
+        example: "10,00,000.00"
+      'Balance AMT':
+        type: string
+        example: "10,00,000.00"
+    required:
+      - 'Account No'
+      - 'Date'
+      - 'Transaction Details'
+      - 'Value Date'
+      - 'Balance AMT'
+  Message:
+    properties:
+      message:
+        type: string
+        example: Some message.
+
+paths:
+  /transactions/:
+    get:
+      operationId: resources.transaction_resource.list_transactions
+      tags:
+        - List All Transactions
+      summary: Detailed list of all transactions
+      description: View all the transactions
+      parameters:
+        - in: query
+          name: _limit
+          type: integer
+          description: To limit search records
+          required: False
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Transaction"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/Message"
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: "#/definitions/Message"
+  
+  /transactions/{search_date}:
+    get:
+      operationId: resources.transaction_resource.get_all_transactions_by_date
+      tags:
+        - Search Transactions By Date
+      summary: Search Transactions By Date
+      description: Searching transactions by date
+      parameters:
+        - in: path
+          name: search_date
+          type: string
+          description: transaction date
+          required: True
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Transaction"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/Message"
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: "#/definitions/Message"
+    
+  /transaction/{transaction_id}:
+    get:
+      operationId: resources.transaction_resource.get_single_transaction_by_id
+      tags:
+        - Get A Transaction By Id
+      summary: Get A Transaction By Id
+      description: Get A Transaction By Id
+      parameters:
+        - in: path
+          name: transaction_id
+          type: string
+          description: transaction Id
+          required: True
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Transaction"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/Message"
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: "#/definitions/Message"
+
+  /transaction/add:
+    post:
+      operationId: resources.transaction_resource.add_new_transaction
+      tags:
+        - Add A New Transaction
+      summary: Make/create a new transaction
+      parameters:
+        - in: body
+          name: transaction_json
+          description: A new transaction to make.
+          required: True
+          schema:
+            $ref: "#/definitions/Transaction"
+      responses:
+        201:
+          description: CREATED
+          schema:
+            type: object
+            properties:
+              transactionId:
+                type: integer
+        400:
+          description: BAD REQUEST
+          schema:
+            $ref: "#/definitions/Message"
