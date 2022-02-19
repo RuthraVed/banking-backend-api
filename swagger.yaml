@@ -119,7 +119,7 @@ paths:
           schema:
             $ref: "#/definitions/Message"
     
-  /transaction/{transaction_id}:
+  /transactions/details/{transaction_id}:
     get:
       operationId: resources.transaction_resource.get_single_transaction_by_id
       tags:
