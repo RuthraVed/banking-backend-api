@@ -12,7 +12,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: 0.0.1
 
-host: 192.168.1.36:5000
+host: banking-backend-api.herokuapp.com
 basePath: /api
 schemes:
   - https
